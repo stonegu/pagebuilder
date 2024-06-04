@@ -6,6 +6,7 @@ import pluginTooltip from 'grapesjs-tooltip';
 import preset from 'grapesjs-preset-webpage';
 import customCodePlugin from 'grapesjs-custom-code';
 import exportPlugin from '../../../scripts/grapesjs-plugins/export';
+import shtjPlugin from '../../../scripts/grapesjs-plugins/saveHtmlToJson';
 // import thePlugin from 'grapesjs-plugin-export';
 
 
@@ -39,9 +40,14 @@ export class WebpageBuilderComponent implements OnInit, AfterContentInit{
         editor => gjsForms(editor, {}),
         editor => pluginTooltip(editor, { /* options */ }),
         editor => customCodePlugin(editor, {}),
-        editor => exportPlugin(editor, { 
+        // editor => exportPlugin(editor, { 
+        //   btnLabel: 'Save'
+        // }),
+        editor => shtjPlugin(editor, { 
           btnLabel: 'Save'
-         })
+        })
+
+
       ],
 
 
