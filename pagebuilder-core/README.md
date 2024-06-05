@@ -5,6 +5,32 @@
 mvn clean install -U -DskipTests
 ```
 
+## Encryption
+The application uses jasypt encryption/decryption to encrypt/decrypt values on the command line (like db passwords).  To enable property enc/dec, the main application file needs to have the annotation: `@EnableEncryptableProperties`.  To encrypt a value/property, you need to encrypt the value using the jasypt command line tool as follows:
+
+Following is the significance of command-line parameters passed to run the jar:
+
+* input: Actual password to be encrypted
+* password: the secret key chosen by you (example, helloworld)
+* algorithm: PBEWithMD5AndDES (default algorithm used)
+* OUTPUT: Encrypted value of input
+
+```powershell
+C:\Users\pzw>java -cp C:\Users\pzw\.m2\repository\org\jasypt\jasypt\1.9.3\jasypt-1.9.3.jar
+org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input="checkPasswordFile" password=secretKey algorithm=PBEWithMD5AndDES
+
+----ENVIRONMENT-----------------
+Runtime: Eclipse Adoptium OpenJDK 64-Bit Server VM 17.0.2+8
+
+----ARGUMENTS-------------------
+input: checkPasswordFile
+password: secretKey
+algorithm: PBEWithMD5AndDES
+
+----OUTPUT----------------------
+02p24DHSBZMTa3JDSN7NbhUxEd/HAChh=
+```
+
 ## Table Design
 ```sql
 DROP DATABASE pagebuilder;

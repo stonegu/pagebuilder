@@ -1,1 +1,38 @@
-spring.application.name=pagebuilder-core
+# ------------------------------
+# Development profile properties
+# ------------------------------
+environment: local
+
+server:
+   port: 8086
+
+api:
+   base-request-mapping: "/api/v1.0/pagebuilder" 
+
+
+# ------------------------------
+# DB info
+# ------------------------------
+spring:
+   application:
+      name: "Pagebuilder Web Service"
+   jackson:
+      date-format: "dd-MM-yyyy HH:mm:ss"
+      time-zone: "GMT-5"
+   servlet:
+      multipart:
+         max-file-size: 2MB
+         max-request-size: 2MB
+   datasource:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: stonegu
+      password: ENC(YNuUIyrCWAujGSGgQE+nOab5N/8ozeJ8)
+      url: jdbc:mysql://localhost:3306/pagebuilder?useSSL=false
+   jpa:
+      show-sql: true
+      hibernate:
+         ddl-auto: update
+jasypt:
+   encryptor:
+      algorithm: PBEWithMD5AndDES
+      iv-generator-classname: org.jasypt.iv.NoIvGenerator
