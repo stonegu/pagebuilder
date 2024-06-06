@@ -5,4 +5,8 @@ import com.bizislife.pagebuildercore.dao.entiry.Page;
 
 public interface PageService {
    List<Page> getAllPages();
+
+   Page findPageById(Long pageId);
+
+   Long addPage(Page page);
 }

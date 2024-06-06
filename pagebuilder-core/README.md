@@ -39,7 +39,7 @@ USE pagebuilder;
 
 CREATE TABLE `page`
 (
-    `id`   bigint(20) unsigned NOT NULL,
+    `id`   bigint(20) unsigned NOT NULL AUTO_INCREMENT,
     `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
     `components` MEDIUMTEXT COLLATE utf8_unicode_ci,
     `css` MEDIUMTEXT COLLATE utf8_unicode_ci,
