@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.bizislife.pagebuildercore.dao.PageRepository;
 import com.bizislife.pagebuildercore.dao.entiry.Page;
+import com.bizislife.pagebuildercore.model.PageResponse;
+import com.bizislife.pagebuildercore.model.PageWithoutBodyResponse;
 import com.bizislife.pagebuildercore.service.PageService;
 
 @Service("PageService")
@@ -23,32 +25,28 @@ public class PageServiceImpl implements PageService {
    }
 
    @Override
-   public List<Page> getAllPages() {
-      return pageRepository.findAll();
-   }
-
-   @Override
-   public List<Page> getAllPagesWithoutBody() {
-      List<Page> pages = new ArrayList<>();
-      List<Page> thePages = getAllPages();
+   public List<PageResponse> getAllPages() {
+      List<PageResponse> pageListResult = new ArrayList<>();
+      List<Page> thePages = pageRepository.findAll();
       if (CollectionUtils.isNotEmpty(thePages)) {
-         thePages.forEach( p -> {
-            Page thePage = new Page();
-            thePage.setId(p.getId());
-            thePage.setName(p.getName());
-            pages.add(thePage);
+         thePages.forEach(p -> {
+            pageListResult.add(new PageResponse().mapFromPojo(p));
          });
       }
-
-      return pages;
+      return pageListResult;
    }
 
    @Override
-   public Page findPageById(Long pageId) {
-      Page page = null;
+   public List<PageWithoutBodyResponse> getAllPagesWithoutBody() {
+      return pageRepository.findPageWithoutBodyResponses();
+   }
+
+   @Override
+   public PageResponse findPageById(Long pageId) {
+      PageResponse page = null;
       Optional<Page> thePage = pageRepository.findById(pageId);
       if (thePage.isPresent()) {
-         page = thePage.get();
+         page = new PageResponse().mapFromPojo(thePage.get());
       }
 
       return page;
@@ -60,17 +58,19 @@ public class PageServiceImpl implements PageService {
       return newPage.getId();
    }
 
-   public Page updatePage(Page page) {
+   public PageResponse updatePage(Page page) {
 
-      Page pageToUpdate = findPageById(page.getId());
-      if (pageToUpdate != null) {
+      Optional<Page> thePageOpt = pageRepository.findById(page.getId());
+
+      if (thePageOpt.isPresent()) {
+         Page pageToUpdate = thePageOpt.get();
          pageToUpdate.setComponents(page.getComponents());
          pageToUpdate.setCss(page.getCss());
-
          pageToUpdate = pageRepository.saveAndFlush(pageToUpdate);
+         return new PageResponse().mapFromPojo(pageToUpdate);
       }
 
-      return pageToUpdate;
+      return null;
    }
 
 }

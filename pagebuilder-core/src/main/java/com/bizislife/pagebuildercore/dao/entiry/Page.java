@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity(name = "page")
-public class Page {
+public class Page implements Pojo{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

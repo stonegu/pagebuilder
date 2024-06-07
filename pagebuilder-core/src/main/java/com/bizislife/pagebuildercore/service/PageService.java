@@ -2,14 +2,16 @@ package com.bizislife.pagebuildercore.service;
 
 import java.util.List;
 import com.bizislife.pagebuildercore.dao.entiry.Page;
+import com.bizislife.pagebuildercore.model.PageResponse;
+import com.bizislife.pagebuildercore.model.PageWithoutBodyResponse;
 
 public interface PageService {
-   List<Page> getAllPages();
-   List<Page> getAllPagesWithoutBody();
+   List<PageResponse> getAllPages();
+   List<PageWithoutBodyResponse> getAllPagesWithoutBody();
 
-   Page findPageById(Long pageId);
+   PageResponse findPageById(Long pageId);
 
    Long addPage(Page page);
 
-   Page updatePage(Page page);
+   PageResponse updatePage(Page page);
 }
