@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Page, Project } from '../../models/page.model';
+import { Page, PageWithoutBody, Project } from '../../models/page.model';
 import { PageService } from '../../service/page.service';
 import { Subscription } from 'rxjs';
 import { inject } from '@angular/core';
@@ -14,8 +14,8 @@ import { inject } from '@angular/core';
 export class LeftNavComponent implements OnInit, OnDestroy {
 
   // init
-  pages: Page[] = [];
-  projects: Project[] = [{id: 'project-1', name: 'project #1', pages: this.pages}];
+  // pages: Page[] = [];
+  // projects: Project[] = [{id: 'project-1', name: 'project #1', pages: this.pages}];
 
   // subscription
   getAllPagesSubscription: Subscription;
@@ -28,9 +28,9 @@ export class LeftNavComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.getAllPagesSubscription = this.pageService.getAllPages().subscribe({
-      next: (data) => {
+      next: (data: PageWithoutBody[]) => {
         console.log(JSON.stringify(data));
-        // this.pageService.allPagesSignal.set(data);
+        this.pageService.allPagesSignal.set(data);
       },
       error: (err) => {
         this.pageService.errorSignal.set(err);

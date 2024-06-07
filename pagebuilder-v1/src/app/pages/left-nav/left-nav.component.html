@@ -17,7 +17,7 @@
 
          </div> -->
          <div class="pages">
-            @for (page of pages; track $index) {
+            @for (page of pageService.allPagesSignal(); track $index) {
             <div (click)="onSelectPage(page.id)">{{page.name}}</div>
             }
          </div>
