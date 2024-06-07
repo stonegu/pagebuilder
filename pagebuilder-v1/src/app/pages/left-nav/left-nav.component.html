@@ -8,14 +8,14 @@
 
       <div class="projects-wrp">
          <div class="add-page">Add new page</div>
-         <div class="projects">
+         <!-- <div class="projects">
             @for (project of projects; track $index) {
                <div>
                   <span>{{project.name}}</span>
                </div>
             }
 
-         </div>
+         </div> -->
          <div class="pages">
             @for (page of pages; track $index) {
             <div (click)="onSelectPage(page.id)">{{page.name}}</div>

@@ -16,6 +16,8 @@ api:
 spring:
    application:
       name: "Pagebuilder Web Service"
+   security:
+      AUTH_WHITELIST: /api/v1.0/pagebuilder/page/all, /api/v1.0/pagebuilder/page/*, /api/v1.0/pagebuilder/page/add, /api/v1.0/pagebuilder/page/update
    jackson:
       date-format: "dd-MM-yyyy HH:mm:ss"
       time-zone: "GMT-5"

@@ -6,5 +6,15 @@ export interface Project {
 
 export interface Page {
    id: string,
-   name: string
+   name: string,
+   components: string,
+   css: string
+}
+
+export interface ApiError {
+   logId: string,
+   httpStatus: number,
+   timestamp: string,
+   message: string,
+   path: string
 }

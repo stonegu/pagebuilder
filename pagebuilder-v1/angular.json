@@ -36,6 +36,13 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/pagebuilder-v1/production",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -51,6 +58,13 @@
               "outputHashing": "all"
             },
             "development": {
+              "outputPath": "dist/pagebuilder-v1/development",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
