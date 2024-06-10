@@ -1,5 +1,28 @@
 # Angular GrapesJS Integration
 
+## Install project dependencies
+In the project's root directory, run the following command to install the project dependencies:
+```powershell
+npm install
+```
+## Serve the application
+After the dependencies are installed, start the development server and serve the Angular application by running the following command:
+```powershell
+ng serve
+```
+Open a web browser and navigate to [http://localhost:4200](http://localhost:4200) to see the running application.
+## Build
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```powershell
+ng build
+```
+Run `ng build --configuration=development` to build for the development environment
+```powershell
+ng build --configuration=aws-dev
+```
+
+
+
 ## GrapesJS Extensions
 The example is trying to add "grapesjs-plugin-forms" into the project
 

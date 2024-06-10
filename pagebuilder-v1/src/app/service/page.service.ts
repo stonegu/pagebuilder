@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";
 import { MkmApiResponse, Page, PageId, PageWithoutBody } from "../models/page.model";
 import { environment } from "../../environments/environment";
@@ -45,7 +45,7 @@ export class PageService {
          .pipe(
             tap((resp) => {console.log('PageService.getAllPages: ' + JSON.stringify(resp))}),
             map((resp => {
-               let pagesWithoutBody: PageWithoutBody[] = this.returnDataArrayFromMkmApiResponse(resp);
+               const pagesWithoutBody: PageWithoutBody[] = this.returnDataArrayFromMkmApiResponse(resp);
                return pagesWithoutBody;
             })),
             shareReplay(1),
@@ -59,7 +59,7 @@ export class PageService {
          .pipe(
             tap((resp) => {console.log('PageService.getPageById: ' + JSON.stringify(resp))}),
             map((resp => {
-               let page: Page = this.returnDataFromMkmApiResponse(resp) as Page;
+               const page: Page = this.returnDataFromMkmApiResponse(resp) as Page;
                return page;
             })),
             shareReplay(1),
@@ -89,7 +89,7 @@ export class PageService {
       ).pipe(
          tap((resp) => {console.log('PageService.updatePage: ' + JSON.stringify(resp))}),
          map((resp => {
-            let page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
+            const page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
             return page;
          })),
          retry(2),
@@ -102,7 +102,7 @@ export class PageService {
       .pipe(
          tap((resp) => {console.log('PageService.addNewPage: ' + JSON.stringify(resp))}),
          map((resp => {
-            let page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
+            const page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
             return page;
          })),
          retry(2),
@@ -112,7 +112,7 @@ export class PageService {
    }
 
    private returnDataArrayFromMkmApiResponse(resp: MkmApiResponse): PageWithoutBody[] {
-      let pagesWithoutBody: PageWithoutBody[] = [];
+      const pagesWithoutBody: PageWithoutBody[] = [];
 
       if (!!resp.dataset && resp.dataset.length > 0) {
          resp.dataset.forEach((item: PageWithoutBody) => {
@@ -125,7 +125,7 @@ export class PageService {
    private returnDataFromMkmApiResponse(resp: MkmApiResponse): PageWithoutBody | Page {
       let page: Page | PageWithoutBody = null;
       if (!!resp.data) {
-         page = resp.data;
+         page = resp.data as Page | PageWithoutBody;
       }
       return page;
    }

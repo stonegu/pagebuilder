@@ -8,8 +8,6 @@ import { ApiError } from "../models/page.model";
  })
  export class ErrorHandleService {
  
-   constructor() { }
- 
    handleError(err: HttpErrorResponse): Observable<never> {
      const isApiError = (value: ApiError): value is ApiError => !!value?.logId;
      

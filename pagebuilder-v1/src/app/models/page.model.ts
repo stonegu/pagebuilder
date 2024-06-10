@@ -29,6 +29,6 @@ export interface ApiError {
 export interface MkmApiResponse {
    logId: string,
    timestamp: string,
-   data: any | null,
-   dataset: any[] | null
+   data: unknown | null,
+   dataset: unknown[] | null
 }

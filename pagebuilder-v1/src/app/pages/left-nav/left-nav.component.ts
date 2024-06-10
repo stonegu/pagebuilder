@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Page, PageWithoutBody, Project } from '../../models/page.model';
+import { PageWithoutBody } from '../../models/page.model';
 import { PageService } from '../../service/page.service';
 import { Subscription } from 'rxjs';
 import { inject } from '@angular/core';
 
 @Component({
-  selector: 'left-nav',
+  selector: 'app-left-nav',
   standalone: true,
   imports: [],
   templateUrl: './left-nav.component.html',
@@ -43,9 +43,7 @@ export class LeftNavComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
-    !!this.getAllPagesSubscription ? this.getAllPagesSubscription.unsubscribe() : true;
-
+    this.getAllPagesSubscription?.unsubscribe();
   }
 
   onSelectPage(pageId: string, uuid: string) {

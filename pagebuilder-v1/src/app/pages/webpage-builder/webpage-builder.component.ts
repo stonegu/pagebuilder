@@ -13,7 +13,7 @@ import { Page, PageWithoutBody } from '../../models/page.model';
 
 
 @Component({
-  selector: 'webpage-builder',
+  selector: 'app-webpage-builder',
   standalone: true,
   imports: [],
   templateUrl: './webpage-builder.component.html',
@@ -23,8 +23,7 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
 
   // init
   #editor: Editor = null;
-  #pageManager: any;
-  pages: any[] = [];
+  pages: unknown[] = [];
 
   
   // subscription
@@ -61,17 +60,17 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
         editor => shtjPlugin(editor, { 
           btnLabel: 'Save',
           done: () => {
-            let componentsInJsonString = JSON.stringify(this.getComponentsInJson(editor));
-            let componentsCss = editor.getCss({avoidProtected: true});
-            let pm = editor.Pages;
+            const componentsInJsonString = JSON.stringify(this.getComponentsInJson(editor));
+            const componentsCss = editor.getCss({avoidProtected: true});
+            const pm = editor.Pages;
             // get uuid from page attribute
-            let uuid = pm.getSelected()?.attributes['uuid'] as string;
+            const uuid = pm.getSelected()?.attributes['uuid'] as string;
             // get id
-            let id = pm.getSelected()?.getId();
+            const id = pm.getSelected()?.getId();
             // get pagename
-            let pagename = pm.getSelected()?.getName();
+            const pagename = pm.getSelected()?.getName();
 
-            let page: Page = {
+            const page: Page = {
               id: id,
               uuid: uuid,
               name: pagename,
@@ -116,9 +115,8 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
   }
 
   ngAfterContentInit(): void {
-    this.#pageManager = this.#editor.Pages;
-    this.pages = this.#pageManager.getAll();
-    let mainPage = this.#pageManager.getSelected();
+    this.pages = this.#editor.Pages.getAll();
+    const mainPage = this.#editor.Pages.getSelected();
     console.log(this.pages);
     console.log(mainPage);
   }
@@ -139,12 +137,12 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
 
         // this.editor.setComponents(JSON.parse(data.components)).setStyle(data.css);
 
-        let pm = this.#editor.Pages;
+        const pm = this.#editor.Pages;
         pm.getAll().forEach(p => {
           pm.remove(p);
         })
 
-        let p = pm.add({
+        const p = pm.add({
           id: data.id,
           name: data.name,
           styles: data.css,
@@ -172,9 +170,9 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
 
   }
 
-  getComponentsInJson(editor: Editor): any[] | [] {
+  getComponentsInJson(editor: Editor): unknown[] | [] {
 
-    let projectData: ProjectData = editor.getProjectData();
+    const projectData: ProjectData = editor.getProjectData();
     if (!!projectData) {
       return projectData['pages'][0].frames[0].component?.components;
     }
