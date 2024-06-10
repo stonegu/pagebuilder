@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";
-import { MkmApiResponse, Page, PageWithoutBody } from "../models/page.model";
+import { MkmApiResponse, Page, PageId, PageWithoutBody } from "../models/page.model";
 import { environment } from "../../environments/environment";
-import { catchError, map, shareReplay, tap } from "rxjs";
+import { Observable, Subject, catchError, map, retry, shareReplay, tap } from "rxjs";
 import { ErrorHandleService } from "./error-handle.service";
 
 @Injectable({
@@ -13,11 +13,20 @@ export class PageService {
    // predefined environments
    #searchBaseUrl: string | undefined;
    #searchAllPagesEndpoint: string | undefined;
+   #updatePageEndpoint: string | undefined;
+   #addPageEndpoint: string | undefined;
 
    // signals
    allPagesSignal = signal<PageWithoutBody[]>([] as PageWithoutBody[]);
    isLoadingSignal = signal<boolean>(false);
    errorSignal = signal<string>('');
+
+   // observable
+   private selectedPageId = new Subject<PageId>();
+   selectedPageId$ = this.selectedPageId.asObservable();
+   setSelectedPageId(id: PageId) {
+      this.selectedPageId.next(id);
+   }
  
 
    // services
@@ -26,23 +35,83 @@ export class PageService {
    constructor(private httpClient: HttpClient) {
       this.#searchBaseUrl = environment.searchBaseUrl;
       this.#searchAllPagesEndpoint = environment.searchAllPagesEndpoint;
+      this.#updatePageEndpoint = environment.updatePageEndpoint;
+      this.#addPageEndpoint = environment.addPageEndpoint;
    }
 
-   getAllPages() {
+   getAllPages(): Observable<PageWithoutBody[]> {
       return this.httpClient
          .get<MkmApiResponse>(`${this.#searchBaseUrl}${this.#searchAllPagesEndpoint}`)
          .pipe(
-            tap((resp) => {console.log('Pageservice.getAllPages: ' + JSON.stringify(resp))}),
+            tap((resp) => {console.log('PageService.getAllPages: ' + JSON.stringify(resp))}),
             map((resp => {
-               let pagesWithoutBody: PageWithoutBody[] = this.processPagesRespToPage(resp);
+               let pagesWithoutBody: PageWithoutBody[] = this.returnDataArrayFromMkmApiResponse(resp);
                return pagesWithoutBody;
             })),
             shareReplay(1),
-            catchError( (err) => {return this.#errorHandleService.handleError(err)} )
-         )
+            catchError((err) => {return this.#errorHandleService.handleError(err)})
+         );
    }
 
-   private processPagesRespToPage(resp: MkmApiResponse): PageWithoutBody[] {
+   getPageById(id: string, uuid: string): Observable<Page> {
+      return this.httpClient
+         .get<MkmApiResponse>(`${this.#searchBaseUrl}${id}/${uuid}`)
+         .pipe(
+            tap((resp) => {console.log('PageService.getPageById: ' + JSON.stringify(resp))}),
+            map((resp => {
+               let page: Page = this.returnDataFromMkmApiResponse(resp) as Page;
+               return page;
+            })),
+            shareReplay(1),
+            catchError((err) => {return this.#errorHandleService.handleError(err)})
+         );
+   }
+
+   // check this: https://www.concretepage.com/angular/angular-httpclient-put
+   updatePage(page: Page): Observable<PageWithoutBody> {
+      // const myHeaders = new HttpHeaders()
+      //    .append("Content-Type", "application/json")
+      //    .append("Content-Length", "70")
+      //    .append('Authorization', `Bearer ${authToken}`);
+
+      // const myParams = new HttpParams()
+      //    .set("bookId", "101")
+      //    .set("publisher", "XYZ");
+
+      return this.httpClient.put<MkmApiResponse>(`${this.#searchBaseUrl}${this.#updatePageEndpoint}`, page
+      // , {
+      //    headers: myHeaders,
+      //    params: myParams,
+      //    observe: "response",
+      //    responseType: "json",
+      //    withCredentials: true
+      // }
+      ).pipe(
+         tap((resp) => {console.log('PageService.updatePage: ' + JSON.stringify(resp))}),
+         map((resp => {
+            let page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
+            return page;
+         })),
+         retry(2),
+         catchError((err) => {return this.#errorHandleService.handleError(err)})
+      );
+   }
+
+   addNewPage(page: Page): Observable<PageWithoutBody> {
+      return this.httpClient.post<MkmApiResponse>(`${this.#searchBaseUrl}${this.#addPageEndpoint}`, page)
+      .pipe(
+         tap((resp) => {console.log('PageService.addNewPage: ' + JSON.stringify(resp))}),
+         map((resp => {
+            let page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
+            return page;
+         })),
+         retry(2),
+         catchError((err) => {return this.#errorHandleService.handleError(err)})
+      )
+
+   }
+
+   private returnDataArrayFromMkmApiResponse(resp: MkmApiResponse): PageWithoutBody[] {
       let pagesWithoutBody: PageWithoutBody[] = [];
 
       if (!!resp.dataset && resp.dataset.length > 0) {
@@ -51,6 +120,14 @@ export class PageService {
          })
       }
       return pagesWithoutBody;
+   }
+
+   private returnDataFromMkmApiResponse(resp: MkmApiResponse): PageWithoutBody | Page {
+      let page: Page | PageWithoutBody = null;
+      if (!!resp.data) {
+         page = resp.data;
+      }
+      return page;
    }
 
 }

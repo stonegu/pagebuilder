@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-plugin-shtj",
-  "version": "1.0.16",
+  "version": "1.0.22",
   "description": "Save & Export GrapesJS templates to json & ZIP",
   "main": "dist/index.js",
   "files": [

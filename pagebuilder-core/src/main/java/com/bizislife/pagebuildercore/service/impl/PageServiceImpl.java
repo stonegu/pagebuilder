@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,34 +43,41 @@ public class PageServiceImpl implements PageService {
    }
 
    @Override
-   public PageResponse findPageById(Long pageId) {
+   public PageResponse findPageById(Long pageId, String uuid) {
       PageResponse page = null;
-      Optional<Page> thePage = pageRepository.findById(pageId);
-      if (thePage.isPresent()) {
-         page = new PageResponse().mapFromPojo(thePage.get());
+      Optional<Page> pageOptional = pageRepository.findById(pageId);
+      if (pageOptional.isPresent()) {
+         Page thePage = pageOptional.get();
+         if(StringUtils.equals(thePage.getUuid(), uuid)) {
+            page = new PageResponse().mapFromPojo(thePage);
+         }
       }
 
       return page;
    }
 
    @Override
-   public Long addPage(Page page) {
-      Page newPage = pageRepository.saveAndFlush(page);
-      return newPage.getId();
+   public PageWithoutBodyResponse addPage(Page page) {
+      PageWithoutBodyResponse thePage = null;
+      if (StringUtils.isNotBlank(page.getUuid()) && StringUtils.isNotBlank(page.getName())) {
+         Page newPage = pageRepository.saveAndFlush(page);
+         thePage = new PageWithoutBodyResponse().mapFromPojo(newPage);
+      }
+      return thePage;
    }
 
-   public PageResponse updatePage(Page page) {
-
+   public PageWithoutBodyResponse updatePage(Page page) {
       Optional<Page> thePageOpt = pageRepository.findById(page.getId());
 
       if (thePageOpt.isPresent()) {
          Page pageToUpdate = thePageOpt.get();
-         pageToUpdate.setComponents(page.getComponents());
-         pageToUpdate.setCss(page.getCss());
-         pageToUpdate = pageRepository.saveAndFlush(pageToUpdate);
-         return new PageResponse().mapFromPojo(pageToUpdate);
+         if (StringUtils.equals(pageToUpdate.getUuid(), page.getUuid())) {
+            pageToUpdate.setComponents(page.getComponents());
+            pageToUpdate.setCss(page.getCss());
+            pageToUpdate = pageRepository.saveAndFlush(pageToUpdate);
+            return new PageWithoutBodyResponse().mapFromPojo(pageToUpdate);   
+         }
       }
-
       return null;
    }
 

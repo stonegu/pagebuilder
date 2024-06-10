@@ -22,6 +22,9 @@ public class Page implements Pojo{
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private Long id;
 
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
+
     @Column(name = "name", nullable = false)
     private String name;
 

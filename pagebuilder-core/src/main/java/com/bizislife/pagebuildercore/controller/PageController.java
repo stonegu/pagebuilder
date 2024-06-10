@@ -1,6 +1,7 @@
 package com.bizislife.pagebuildercore.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,33 +45,36 @@ public class PageController {
       return new ResponseEntity<>(apiResponse, HttpStatus.OK);
    }
 
-   @GetMapping("/{pageId}")
+   @GetMapping("/{pageId}/{uuid}")
    @ResponseBody
    public ResponseEntity<PbApiResponse<PageResponse>> getPageById(
-      @PathVariable("pageId") Long pageId
+      @PathVariable("pageId") Long pageId,
+      @PathVariable("uuid") String uuid
    ) {
-      PageResponse page = pageService.findPageById(pageId);
+      PageResponse page = pageService.findPageById(pageId, uuid);
       PbApiResponse<PageResponse> apiResponse = ApiResponseUtils.createApiResponse(page, logIdGenerator.getLogId());
       return new ResponseEntity<>(apiResponse, HttpStatus.OK);
    }
 
    @PostMapping("/add")
-   public ResponseEntity<PbApiResponse<StringResult>> add(
+   public ResponseEntity<PbApiResponse<PageWithoutBodyResponse>> add(
       @RequestBody Page page
    ) {
-      Long pageId = pageService.addPage(page);
-      StringResult pageIdInString = new StringResult(Long.toString(pageId));
-
-      PbApiResponse<StringResult> apiResponse = ApiResponseUtils.createApiResponse(pageIdInString, logIdGenerator.getLogId());
+      // add page uuid
+      if (page != null) {
+         page.setUuid(UUID.randomUUID().toString());
+      }
+      PageWithoutBodyResponse thePage = pageService.addPage(page);
+      PbApiResponse<PageWithoutBodyResponse> apiResponse = ApiResponseUtils.createApiResponse(thePage, logIdGenerator.getLogId());
       return new ResponseEntity<>(apiResponse, HttpStatus.OK);
    }
 
    @PutMapping("/update")
-   public ResponseEntity<PbApiResponse<PageResponse>> updatePage(
+   public ResponseEntity<PbApiResponse<PageWithoutBodyResponse>> updatePage(
       @RequestBody Page page
    ) {
-      PageResponse thePage = pageService.updatePage(page);
-      PbApiResponse<PageResponse> apiResponse = ApiResponseUtils.createApiResponse(thePage, logIdGenerator.getLogId());
+      PageWithoutBodyResponse thePage = pageService.updatePage(page);
+      PbApiResponse<PageWithoutBodyResponse> apiResponse = ApiResponseUtils.createApiResponse(thePage, logIdGenerator.getLogId());
       return new ResponseEntity<>(apiResponse, HttpStatus.OK);
    }
 

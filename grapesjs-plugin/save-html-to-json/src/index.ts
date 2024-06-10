@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 import { Editor, Plugin, ProjectData } from 'grapesjs';
 import JSZip from 'jszip';
-import axios from 'axios';
+// import axios from 'axios';
 
 export type RootType = Record<string, unknown>;
 
@@ -136,23 +136,35 @@ const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
 
       let componentsCss = editor.getCss({avoidProtected: true});
 
+      let pm = editor.Pages;
+      // get uuid from page attribute
+      let uuid = pm.getSelected()?.attributes['uuid'];
+      // get id
+      let id = pm.getSelected()?.getId();
+      // get pagename
+      let pagename = pm.getSelected()?.getName();
+
+
       console.log('components: ' + componentsInJsonString);
       console.log('css: ' + componentsCss);
+      console.log('uuid: ' + uuid);
+      console.log('id: ' + id);
+      console.log('pagename: ' + pagename);
 
 
 
 
 
       // https://devapps.markham.ca/mkmpropertydetailssearchws/api/v1.0/propertysearchcontroller/hello
-      axios.get('https://devapps.markham.ca/mkmpropertydetailssearchws/api/v1.0/propertysearchcontroller/hello')
-        .then(function (response) {
-          console.log('... response: ' + response);
-        }).catch(function (error) {
-          console.log('... error: ' + error);
-        })
-        .finally(function() {
-          console.log('... finally ...');
-        })
+      // axios.get("saveUrl")
+      //   .then(function (response) {
+      //     console.log('... response: ' + response);
+      //   }).catch(function (error) {
+      //     console.log('... error: ' + error);
+      //   })
+      //   .finally(function() {
+      //     console.log('... finally ...');
+      //   })
 
       if (exportFilesInZip) {
         this.createDirectory(zip, root)
@@ -166,6 +178,10 @@ const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
           done?.();
         })
         .catch(onError);
+      }
+
+      if (config.done) {
+        config.done();
       }
 
     },
@@ -209,6 +225,10 @@ const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
     },
 
     getComponentsInJson(editor: Editor): any[] | [] {
+
+      console.log('pagename: ' + editor.Pages.name);
+      console.log('pagename: ' + editor.Pages.collections);
+
       let projectData: ProjectData = editor.getProjectData();
       if (!!projectData) {
         return projectData.pages[0].frames[0].component?.components;

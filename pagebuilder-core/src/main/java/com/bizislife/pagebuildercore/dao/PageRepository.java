@@ -11,7 +11,7 @@ import com.bizislife.pagebuildercore.model.PageWithoutBodyResponse;
 public interface PageRepository extends JpaRepository<Page, Long> {
 
    // check [Effective Use of Projection in Spring Data JPA](https://medium.com/@ak123aryan/effective-use-of-projection-in-spring-data-jpa-b90234d524af)
-   @Query("SELECT NEW com.bizislife.pagebuildercore.model.PageWithoutBodyResponse(p.id, p.name) FROM page p")
+   @Query("SELECT NEW com.bizislife.pagebuildercore.model.PageWithoutBodyResponse(p.id, p.uuid, p.name) FROM page p")
    List<PageWithoutBodyResponse> findPageWithoutBodyResponses();
 
 }

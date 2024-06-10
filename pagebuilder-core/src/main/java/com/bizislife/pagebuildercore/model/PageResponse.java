@@ -13,6 +13,8 @@ public class PageResponse implements ResponseDataInterface, PojoModelInterface {
 
    private Long id;
 
+   private String uuid;
+
    private String name;
 
    private String components;
@@ -21,19 +23,16 @@ public class PageResponse implements ResponseDataInterface, PojoModelInterface {
 
    @Override
    public PageResponse mapFromPojo(Pojo pojo) {
-
       if (pojo != null) {
          Page thePage = (Page)pojo;
          this.id = thePage.getId();
+         this.uuid = thePage.getUuid();
          this.name = thePage.getName();
          this.components = thePage.getComponents();
          this.css = thePage.getCss();
-
          return this;
       }
-
       return null;
-
    }
 
 }

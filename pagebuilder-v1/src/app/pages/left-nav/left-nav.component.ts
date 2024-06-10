@@ -14,16 +14,12 @@ import { inject } from '@angular/core';
 export class LeftNavComponent implements OnInit, OnDestroy {
 
   // init
-  // pages: Page[] = [];
-  // projects: Project[] = [{id: 'project-1', name: 'project #1', pages: this.pages}];
 
   // subscription
   getAllPagesSubscription: Subscription;
 
   // services
   pageService: PageService = inject(PageService);
-
-
 
   ngOnInit(): void {
 
@@ -44,8 +40,6 @@ export class LeftNavComponent implements OnInit, OnDestroy {
 
     });
 
-
-
   }
 
   ngOnDestroy(): void {
@@ -54,8 +48,8 @@ export class LeftNavComponent implements OnInit, OnDestroy {
 
   }
 
-  onSelectPage(pageId: string) {
-
+  onSelectPage(pageId: string, uuid: string) {
+    this.pageService.setSelectedPageId({id: pageId, uuid: uuid});
   }
 
 }

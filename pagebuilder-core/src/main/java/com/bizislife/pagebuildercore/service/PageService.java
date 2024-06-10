@@ -9,9 +9,9 @@ public interface PageService {
    List<PageResponse> getAllPages();
    List<PageWithoutBodyResponse> getAllPagesWithoutBody();
 
-   PageResponse findPageById(Long pageId);
+   PageResponse findPageById(Long pageId, String uuid);
 
-   Long addPage(Page page);
+   PageWithoutBodyResponse addPage(Page page);
 
-   PageResponse updatePage(Page page);
+   PageWithoutBodyResponse updatePage(Page page);
 }

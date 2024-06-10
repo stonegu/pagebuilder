@@ -40,10 +40,12 @@ USE pagebuilder;
 CREATE TABLE `page`
 (
     `id`   bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `uuid` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
     `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
     `components` MEDIUMTEXT COLLATE utf8_unicode_ci,
     `css` MEDIUMTEXT COLLATE utf8_unicode_ci,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uuid` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ```

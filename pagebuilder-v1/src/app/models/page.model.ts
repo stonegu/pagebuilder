@@ -4,8 +4,12 @@ export interface Project {
    pages: Page[]
 }
 
-export interface PageWithoutBody {
+export interface PageId {
    id: string,
+   uuid: string
+}
+
+export interface PageWithoutBody extends PageId {
    name: string
 }
 
