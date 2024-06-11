@@ -15,6 +15,7 @@ export class PageService {
    #searchAllPagesEndpoint: string | undefined;
    #updatePageEndpoint: string | undefined;
    #addPageEndpoint: string | undefined;
+   #deletePageEndpoint: string | undefined;
 
    // signals
    allPagesSignal = signal<PageWithoutBody[]>([] as PageWithoutBody[]);
@@ -37,6 +38,7 @@ export class PageService {
       this.#searchAllPagesEndpoint = environment.searchAllPagesEndpoint;
       this.#updatePageEndpoint = environment.updatePageEndpoint;
       this.#addPageEndpoint = environment.addPageEndpoint;
+      this.#deletePageEndpoint = environment.deletePageEndpoint;
    }
 
    getAllPages(): Observable<PageWithoutBody[]> {
@@ -109,6 +111,19 @@ export class PageService {
          catchError((err) => {return this.#errorHandleService.handleError(err)})
       )
 
+   }
+
+   deletePage(id: string, uuid: string): Observable<PageWithoutBody> {
+      return this.httpClient.delete<MkmApiResponse>(`${this.#searchBaseUrl}${this.#deletePageEndpoint}/${id}/${uuid}`)
+         .pipe(
+            tap((resp) => {console.log('PageService.deletePage: ' + JSON.stringify(resp))}),
+            map((resp => {
+               const page: PageWithoutBody = this.returnDataFromMkmApiResponse(resp) as PageWithoutBody;
+               return page;
+            })),
+            retry(2),
+            catchError((err) => {return this.#errorHandleService.handleError(err)})   
+         )
    }
 
    private returnDataArrayFromMkmApiResponse(resp: MkmApiResponse): PageWithoutBody[] {

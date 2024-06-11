@@ -1,0 +1,11 @@
+<mat-dialog-content>
+   <p>What's your favorite page name?</p>
+   <mat-form-field>
+     <mat-label>Favorite Page Name</mat-label>
+     <input matInput [(ngModel)]="newPageName">
+   </mat-form-field>
+ </mat-dialog-content>
+ <mat-dialog-actions>
+   <button mat-button (click)="onNoClick()">No Thanks</button>
+   <button mat-button [mat-dialog-close]="newPageName" cdkFocusInitial>Ok</button>
+ </mat-dialog-actions>

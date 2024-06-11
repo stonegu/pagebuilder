@@ -7,7 +7,9 @@
    <div class="offcanvas-body">
 
       <div class="projects-wrp">
-         <div class="add-page">Add new page</div>
+         <div class="add-page">
+            <button mat-raised-button (click)="openAddPageDialog()">Add New Page</button>
+         </div>
          <!-- <div class="projects">
             @for (project of projects; track $index) {
                <div>
@@ -17,9 +19,18 @@
 
          </div> -->
          <div class="pages">
-            @for (page of pageService.allPagesSignal(); track $index) {
-            <div (click)="onSelectPage(page.id, page.uuid)">{{page.name}}</div>
-            }
+
+            <mat-list role="list">
+               @for (page of pageService.allPagesSignal(); track $index) {
+                  <mat-list-item role="listitem" (click)="onSelectPage(page.id, page.uuid)">
+                     {{page.name}}
+                     <button mat-raised-button (click)="openDeletePageDialog(page.id, page.uuid, page.name)">Delete</button>
+                  </mat-list-item>
+               }
+            </mat-list>
+
+
+
          </div>
       </div>
 
