@@ -1,0 +1,39 @@
+.gjs-one-bg {
+   background-color: var(--gjs-main-color) !important;
+}
+
+.gjs-two-color {
+   color: var(--bs-white) !important;
+}
+
+.gjs-four-color {
+   color: var(--bs-white) !important;
+}
+
+.gjs-pn-btn.gjs-pn-active {
+   background-color: var(--bs-gray-dark) !important;
+   box-shadow: 0 0 3px var(--bs-gray-200) inset !important;
+}
+
+.gjs-pn-btn:hover {
+   background-color: var(--bs-gray-dark) !important;
+   box-shadow: 0 0 3px var(--bs-gray-200) inset !important;
+}
+
+.gjs-four-color-h:hover {
+   color: var(--bs-white) !important;
+}
+
+.gjs-block:hover {
+   background-color: var(--bs-gray-dark) !important;
+   box-shadow: 0 0 3px var(--bs-gray-200) inset !important;
+}
+
+.gjs-hovered>.gjs-layer-item, .gjs-selected>.gjs-layer-item {
+   background-color: var(--bs-gray-dark) !important;
+   box-shadow: 0 0 3px var(--bs-gray-200) inset !important;
+}
+
+#gjs-cm-title {
+   color: white !important;
+}

@@ -1,5 +1,5 @@
 import FileSaver from 'file-saver';
-import { Editor, Plugin, ProjectData } from 'grapesjs';
+import { Editor, Plugin } from 'grapesjs';
 import JSZip from 'jszip';
 // import axios from 'axios';
 
@@ -130,42 +130,6 @@ const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
       const root = opts.root || config.root;
       const exportFilesInZip = opts.exportFilesInZip || config.exportFilesInZip;
 
-      // create json structure based on the designed contents
-
-      let componentsInJsonString = JSON.stringify(this.getComponentsInJson(editor));
-
-      let componentsCss = editor.getCss({avoidProtected: true});
-
-      let pm = editor.Pages;
-      // get uuid from page attribute
-      let uuid = pm.getSelected()?.attributes['uuid'];
-      // get id
-      let id = pm.getSelected()?.getId();
-      // get pagename
-      let pagename = pm.getSelected()?.getName();
-
-
-      console.log('components: ' + componentsInJsonString);
-      console.log('css: ' + componentsCss);
-      console.log('uuid: ' + uuid);
-      console.log('id: ' + id);
-      console.log('pagename: ' + pagename);
-
-
-
-
-
-      // https://devapps.markham.ca/mkmpropertydetailssearchws/api/v1.0/propertysearchcontroller/hello
-      // axios.get("saveUrl")
-      //   .then(function (response) {
-      //     console.log('... response: ' + response);
-      //   }).catch(function (error) {
-      //     console.log('... error: ' + error);
-      //   })
-      //   .finally(function() {
-      //     console.log('... finally ...');
-      //   })
-
       if (exportFilesInZip) {
         this.createDirectory(zip, root)
         .then(async () => {
@@ -224,27 +188,10 @@ const plugin: Plugin<PluginOptions> = (editor, opts = {}) => {
       }
     },
 
-    getComponentsInJson(editor: Editor): any[] | [] {
-
-      console.log('pagename: ' + editor.Pages.name);
-      console.log('pagename: ' + editor.Pages.collections);
-
-      let projectData: ProjectData = editor.getProjectData();
-      if (!!projectData) {
-        return projectData.pages[0].frames[0].component?.components;
-      }
-      return [];
-    },
-
   });
 
 
   editor.onReady(() => {
-    // test to add component
-
-    // editor.setComponents([{"name":"Row","droppable":".gjs-cell","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":0,"bl":0,"br":0,"minDim":1},"classes":[{"name":"gjs-row","private":1}],"attributes":{"id":"igal"},"components":[{"name":"Cell","draggable":".gjs-row","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":1,"bl":0,"br":0,"minDim":1,"bc":0,"currentUnit":1,"step":0.2},"classes":[{"name":"gjs-cell","private":1}],"components":[{"name":"Row","droppable":".gjs-cell","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":0,"bl":0,"br":0,"minDim":1},"classes":[{"name":"gjs-row","private":1}],"attributes":{"id":"iggr"},"components":[{"name":"Cell","draggable":".gjs-row","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":1,"bl":0,"br":0,"minDim":1,"bc":0,"currentUnit":1,"step":0.2},"classes":[{"name":"gjs-cell","private":1}],"components":[{"type":"text","attributes":{"id":"iw6j"},"components":[{"type":"textnode","content":"Insert your text here 1"}]}]},{"name":"Cell","draggable":".gjs-row","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":1,"bl":0,"br":0,"minDim":1,"bc":0,"currentUnit":1,"step":0.2},"classes":[{"name":"gjs-cell","private":1}],"components":[{"type":"text","attributes":{"id":"iz5pe"},"components":[{"type":"textnode","content":"Insert your text here 2"}]}]},{"name":"Cell","draggable":".gjs-row","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":1,"bl":0,"br":0,"minDim":1,"bc":0,"currentUnit":1,"step":0.2},"classes":[{"name":"gjs-cell","private":1}],"components":[{"type":"text","attributes":{"id":"iwcvi"},"components":[{"type":"textnode","content":"Insert your text here 3"}]}]}]}]},{"name":"Cell","draggable":".gjs-row","resizable":{"tl":0,"tc":0,"tr":0,"cl":0,"cr":1,"bl":0,"br":0,"minDim":1,"bc":0,"currentUnit":1,"step":0.2},"classes":[{"name":"gjs-cell","private":1}],"components":[{"type":"text","attributes":{"id":"i6912"},"components":[{"type":"textnode","content":"Insert your text here 4"}]}]}]}]).setStyle('.gjs-row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}.gjs-cell{width:8%;display:table-cell;height:75px;}#iw6j{padding:10px;}#iz5pe{padding:10px;}#iwcvi{padding:10px;}#i6912{padding:10px;}@media (max-width: 768px){.gjs-cell{width:100%;display:block;}}');
-
-
     // Add button inside export dialog
     if (config.addExportBtn) {
       const btnExp = document.createElement('button');

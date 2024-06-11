@@ -14,4 +14,7 @@ public interface PageService {
    PageWithoutBodyResponse addPage(Page page);
 
    PageWithoutBodyResponse updatePage(Page page);
+
+   PageWithoutBodyResponse deletePage(Long pageId, String uuid);
+
 }

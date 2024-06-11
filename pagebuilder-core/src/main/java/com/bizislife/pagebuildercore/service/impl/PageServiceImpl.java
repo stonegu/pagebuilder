@@ -66,6 +66,7 @@ public class PageServiceImpl implements PageService {
       return thePage;
    }
 
+   @Override
    public PageWithoutBodyResponse updatePage(Page page) {
       Optional<Page> thePageOpt = pageRepository.findById(page.getId());
 
@@ -76,6 +77,22 @@ public class PageServiceImpl implements PageService {
             pageToUpdate.setCss(page.getCss());
             pageToUpdate = pageRepository.saveAndFlush(pageToUpdate);
             return new PageWithoutBodyResponse().mapFromPojo(pageToUpdate);   
+         }
+      }
+      return null;
+   }
+
+   @Override
+   public PageWithoutBodyResponse deletePage(Long pageId, String uuid) {
+      Optional<Page> thePageOpt = pageRepository.findById(pageId);
+
+      if (thePageOpt.isPresent()) {
+         Page pageToDelete = thePageOpt.get();
+         if (StringUtils.equals(pageToDelete.getUuid(), uuid)) {
+
+            PageWithoutBodyResponse pageWithoutBodyResponse = new PageWithoutBodyResponse().mapFromPojo(pageToDelete);
+            pageRepository.delete(pageToDelete);
+            return pageWithoutBodyResponse;
          }
       }
       return null;
