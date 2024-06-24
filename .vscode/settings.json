@@ -1,3 +1,11 @@
 {
-   "java.configuration.updateBuildConfiguration": "automatic"
+   "java.compile.nullAnalysis.mode": "automatic",
+   "java.configuration.updateBuildConfiguration": "automatic",
+   "java.configuration.runtimes": [
+       {
+          "name": "JavaSE-17",
+          "path": "C:\\Users\\stg\\Downloads\\Installed\\openlogic-openjdk-17.0.9+9-windows-x64",
+          "default": true
+      }
+    ]
 }

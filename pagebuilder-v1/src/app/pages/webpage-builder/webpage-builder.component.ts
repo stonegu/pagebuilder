@@ -1,11 +1,12 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import grapesjs, { Editor, ProjectData } from 'grapesjs';
 import plugin from 'grapesjs-blocks-basic';
-import gjsForms from 'grapesjs-plugin-forms';
+// import gjsForms from 'grapesjs-plugin-forms';
 import pluginTooltip from 'grapesjs-tooltip';
 import preset from 'grapesjs-preset-webpage';
 import customCodePlugin from 'grapesjs-custom-code';
 import shtjPlugin from '../../../scripts/grapesjs-plugins/saveHtmlToJson';
+import componentsFormPlugin from '../../../scripts/grapesjs-plugins/componentsForms';
 import { PageService } from '../../service/page.service';
 import { Subscription } from 'rxjs';
 import { Page, PageWithoutBody } from '../../models/page.model';
@@ -51,7 +52,7 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
       plugins: [
         editor => preset(editor, { /* options */ }),
         editor => plugin(editor, { /* options */ }),
-        editor => gjsForms(editor, {}),
+        editor => componentsFormPlugin(editor, {}),
         editor => pluginTooltip(editor, { /* options */ }),
         editor => customCodePlugin(editor, {}),
         // editor => exportPlugin(editor, { 
@@ -112,6 +113,15 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
 
     })
 
+    const types = this.#editor.Components.getTypes();
+    console.log('types: ' + JSON.stringify(types));
+
+
+    // test.............
+
+    // test end.............
+
+
   }
 
   ngAfterContentInit(): void {
@@ -141,6 +151,7 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
         pm.getAll().forEach(p => {
           pm.remove(p);
         })
+        this.#editor.Css.clear();
 
         const p = pm.add({
           id: data.id,
@@ -173,7 +184,7 @@ export class WebpageBuilderComponent implements OnInit, OnDestroy, AfterContentI
   getComponentsInJson(editor: Editor): unknown[] | [] {
 
     const projectData: ProjectData = editor.getProjectData();
-    if (!!projectData) {
+    if (projectData) {
       return projectData['pages'][0].frames[0].component?.components;
     }
     return [];

@@ -28,7 +28,8 @@ spring:
    datasource:
       driverClassName: com.mysql.cj.jdbc.Driver
       username: stonegu
-      password: ENC(YNuUIyrCWAujGSGgQE+nOab5N/8ozeJ8)
+      password: ENC(HbMqaKFpHs2TSyHbrqGTNmBX+hX2zSGH)
+      # password: DVZcStx!hQLf%2
       url: jdbc:mysql://localhost:3306/pagebuilder?useSSL=false
    jpa:
       show-sql: true
